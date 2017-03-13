@@ -1,29 +1,15 @@
 var webpack             = require('webpack');
 var HtmlWebpackPlugin   = require('html-webpack-plugin');
+var commonConfig        = require('./webpack.common.config.js');
 
-module.exports = {
+module.exports = Object.assign({}, commonConfig, {
     devtool: 'source-map',
-
-    entry: {
-        application: './js/index.js',
-        vendor: ['react', 'react-dom', 'react-router', 'mobx', 'mobx-react']
-    },
-
     output: {
         path: __dirname,
         pathinfo: true,
-        filename: 'app.js',
+        filename: 'bundle.js',
         publicPath: '/',
     },
-
-    resolve: {
-        extensions: ['.js', '.jsx', '.svg'],
-        modules: [
-            'src',
-            'node_modules',
-        ],
-    },
-
     devServer: {
         historyApiFallback: {
           index: '/'
@@ -39,7 +25,6 @@ module.exports = {
             }
         }
     },
-
     module: {
         rules: [
             {
@@ -65,7 +50,6 @@ module.exports = {
             }
         ],
     },
-
     plugins: [
         // Generates an `index.html` file with the <script> injected.
         new HtmlWebpackPlugin({
@@ -88,4 +72,4 @@ module.exports = {
             __DEVTOOLS__: true
         }),
     ]
-};
+});
