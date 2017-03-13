@@ -1,21 +1,20 @@
 var webpack             = require('webpack');
 var HtmlWebpackPlugin   = require('html-webpack-plugin');
+var ExtractTextPlugin   = require('extract-text-webpack-plugin');
+var ManifestPlugin      = require('webpack-manifest-plugin');
+var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 
 module.exports = {
-    devtool: 'source-map',
-
+    devtool: 'hidden-source-map',
     entry: {
         application: './js/index.js',
         vendor: ['react', 'react-dom', 'react-router', 'mobx', 'mobx-react']
     },
-
     output: {
-        path: __dirname,
-        pathinfo: true,
-        filename: 'app.js',
+        path: __dirname + '/dist',
+        filename: 'bundle.js',
         publicPath: '/',
     },
-
     resolve: {
         extensions: ['.js', '.jsx', '.svg'],
         modules: [
@@ -23,28 +22,15 @@ module.exports = {
             'node_modules',
         ],
     },
-
-    devServer: {
-        historyApiFallback: {
-          index: '/'
-        },
-        stats: {
-            assets: true,
-            children: false,
-            chunks: false,
-            hash: false,
-            warnings: true,
-            colors: {
-                green: '\u001b[32m'
-            }
-        }
-    },
-
     module: {
         rules: [
             {
                 test: /\.(scss|css)$/,
-                use: ['style-loader', 'css-loader', 'sass-loader']
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader'],
+                    publicPath: __dirname + '/dist'
+                })
             }, {
                 test: /\.jsx?$/,
                 exclude: [/node_modules/, /.+\.config.js/],
@@ -65,12 +51,29 @@ module.exports = {
             }
         ],
     },
-
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            },
+            __DEVELOPMENT__: false
+        }),
         // Generates an `index.html` file with the <script> injected.
         new HtmlWebpackPlugin({
             inject: true,
             template: 'index.html',
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true
+            }
         }),
         // Shared code
         new webpack.optimize.CommonsChunkPlugin({
@@ -78,14 +81,23 @@ module.exports = {
             filename: 'vendor.js',
             minChunks: Infinity
         }),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('development')
-            },
-            __CLIENT__: JSON.stringify(true),
-            __DEVELOPMENT__: true,
-            __DEVTOOLS__: true
+        new ExtractTextPlugin({
+            filename: 'bundle.[chunkhash].css',
+            disable: false,
+            allChunks: true
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
+            compress: {
+                warnings: false
+            }
+        }),
+        new ManifestPlugin({
+            basePath: '/',
+        }),
+        new ChunkManifestPlugin({
+            filename: 'chunk-manifest.json',
+            manifestVariable: 'webpackManifest',
         }),
     ]
 };
