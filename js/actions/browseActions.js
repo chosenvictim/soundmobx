@@ -1,11 +1,30 @@
-import { unauthApiUrl } from '../services/api.js';
-import tracksStore from '../stores/tracksStore.js';
+import SC from 'soundcloud';
+import {tracksStore, userStore} from '../stores';
 
-export function fetchTracksByGenre(nextHref, genre) {
-    const url = nextHref || unauthApiUrl(`tracks?linked_partitioning=1&limit=20&offset=0&genres=${genre}`, '&');
-    return fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            tracksStore.mergeTracksByGenre(genre, data.collection);
+export function auth() {
+    SC.connect()
+        .then((session) => {
+            fetchMe(session);
+            fetchTracks(session);
+        })
+        .catch((error) => {
+            console.log("Error connectin to Soundcloud: ", error);
+        });
+}
+
+export function fetchMe(session) {
+    fetch(`//api.soundcloud.com/me?oauth_token=${session.oauth_token}`)
+        .then((response) => response.json())
+        .then((me) => {
+            console.log('User: ', me);
+            userStore.setMe(me);
+        })
+}
+
+export function fetchTracks(session) {
+    fetch(`//api.soundcloud.com/me/activities?limit=20&offset=0&oauth_token=${session.oauth_token}`)
+        .then((response) => response.json())
+        .then((data) => {
+            tracksStore.setTracks(data.collection);
         });
 }

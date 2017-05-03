@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from '../components/Header.js';
-import Player from '../components/Player.js';
+import Header from './Header.js';
+import Player from './Player.js';
 
 export default function App(props) {
     return (
         <div className="app-container">
             <Header />
-            {props.children}
+            <div className='content-container'>{props.children}</div>
             <Player />
         </div>
     );

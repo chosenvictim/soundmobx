@@ -1,21 +1,29 @@
-import  { observable, action, ObservableMap } from 'mobx';
+import  { observable, action, computed } from 'mobx';
 
 class TracksStore {
-    @observable tracksByGenre;
+    @observable tracks;
+    @observable activeTrackId;
 
-    constructor() {
-        this.tracksByGenre = new ObservableMap({});
+    constructor(tracks = []) {
+        this.tracks = tracks;
+        this.activeTrackId = null;
     }
 
-    @action mergeTracksByGenre = (genre, list) => {
-        if(!this.tracksByGenre.get(genre)) {
-            this.tracksByGenre.set(genre, []);
-        }
-        list.forEach(item => this.tracksByGenre.get(genre).push(item));
+    @computed get activeTrack() {
+        let activeTrack = null;
+        tracksStore.tracks.forEach((track) => {
+            if(track.origin.id === tracksStore.activeTrackId)
+                activeTrack = track;
+        });
+        return activeTrack;
     }
 
-    getByGenre(genre) {
-        return this.tracksByGenre.get(genre);
+    @action setTracks = (tracks) => {
+        this.tracks = tracks;
+    }
+
+    @action playTrack = (track) => {
+        this.activeTrackId = track.origin.id;
     }
 }
 

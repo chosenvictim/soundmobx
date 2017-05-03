@@ -6,7 +6,7 @@ var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 var commonConfig        = require('./webpack.common.config.js');
 
 module.exports = Object.assign({}, commonConfig, {
-    devtool: 'hidden-source-map',
+    devtool: 'source-map',
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js',
@@ -18,7 +18,7 @@ module.exports = Object.assign({}, commonConfig, {
                 test: /\.(scss|css)$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader', 'sass-loader'],
+                    use: ['css-loader', 'postcss-loader', 'sass-loader'],
                     publicPath: __dirname + '/dist'
                 })
             }, {

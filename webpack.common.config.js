@@ -1,9 +1,9 @@
-var webpack             = require('webpack');
+var webpack = require('webpack');
 
 module.exports = {
     entry: {
         application: './js/index.js',
-        vendor: ['react', 'react-dom', 'react-router', 'mobx', 'mobx-react']
+        vendor: ['react', 'react-dom', 'react-router', 'mobx', 'mobx-react', 'soundcloud']
     },
     resolve: {
         extensions: ['.js', '.jsx', '.svg'],
