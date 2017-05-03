@@ -1,5 +1,21 @@
 .header-container {
     background: $dark-grey;
-    height: 46px;
-    // padding: 8px;
+    padding: 6px;
+    .brand-container {
+        margin: 0 10px;
+        .title {
+            margin: 0 4px;
+        }
+    }
+    .search-bar-container {
+        width: 400px;
+        .search-input {
+            width: 97%;
+            height: 25px;
+            border: none;
+            border-radius: 2px;
+            padding: 0 6px;
+            background: #e5e5e5;
+        }
+    }
 }

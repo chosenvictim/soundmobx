@@ -4,9 +4,11 @@
     -moz-osx-font-smoothing: grayscale;
     font-family: 'Roboto', sans-serif;
     background: $light-grey;
+    overflow: scroll;
 }
 
 .content-container {
     text-align: center;
-    padding: 20px;
+    padding: 0 20%;
+    margin-bottom: 60px;
 }

@@ -19,11 +19,47 @@ html, body {
     &.vr {
         flex-direction: column;
     }
+    &.sb {
+        justify-content: space-between;
+    }
+    &.sa {
+        justify-content: space-around;
+    }
+    &.jc {
+        justify-content: center;
+    }
+    &.jfs {
+        justify-content: flex-start;
+    }
+    &.jfe {
+        justify-content: flex-end;
+    }
     &.ac {
         align-items: center;
+    }
+    &.ab {
+        align-items: baseline;
     }
 }
 
 .white {
     color: $white;
+}
+
+.white-bg {
+    background: #FFF;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.span-margin {
+    &.lr {
+        margin: 0 4px;
+    }
+}
+
+.small-text {
+    font-size: 10px;
 }

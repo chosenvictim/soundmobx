@@ -3,6 +3,19 @@
     bottom: 0;
     width: 100%;
     height: 42px;
-    border-top: 1px solid #F6F6F6;
-    background: $white;
+    border-top: 1px solid rgba(0,0,0,.15);
+    background: #F2F2F2;
+    .controls {
+        width: 100px;
+        margin: 0 5%;
+    }
+    .progress-bar {
+        width: 400px;
+        height: 1px;
+        background: #000;
+        margin: 0 2.5%;
+    }
+    .song-info {
+        margin: 0 5%;
+    }
 }

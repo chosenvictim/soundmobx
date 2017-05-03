@@ -1,19 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { inject, observer } from 'mobx-react';
-import {auth} from '../actions/browseActions.js';
-import {autobind} from '../utils.js';
+
+import TrackItem from './TrackItem.js';
+import {auth} from '../actions/tracksActions.js';
 import { CLIENT_ID } from '../constants.js';
 
 @inject('tracksStore', 'userStore') @observer
-class Browse extends React.Component {
-    constructor(props) {
-        super(props);
-        autobind([
-            'renderTrack'
-        ], this);
-    }
-
+class Home extends React.Component {
     componentDidMount() {
         auth();
     }
@@ -27,23 +21,13 @@ class Browse extends React.Component {
             audioElement.pause();
     }
 
-    renderTrack(track, idx) {
-        return (
-            <li key={idx}>
-                <span>{track.origin.title}</span>
-                <button type='button' onClick={() => this.props.tracksStore.playTrack(track)}>Play</button>
-            </li>
-        );
-    }
-
     render() {
         const { tracksStore } = this.props;
         return(
-            <div>
-                <h4>Welcome to SoundMobx</h4>
+            <div className='white-bg'>
                 <ul className="tracks-container">
                     {
-                        tracksStore.tracks.map((track, idx) => this.renderTrack(track, idx))
+                        tracksStore.tracks.map((track, idx) => <TrackItem key={idx} track={track} onClick={() => this.props.tracksStore.playTrack(track)} />)
                     }
                 </ul>
                 {
@@ -57,4 +41,4 @@ class Browse extends React.Component {
     }
 };
 
-export default Browse;
+export default Home;
